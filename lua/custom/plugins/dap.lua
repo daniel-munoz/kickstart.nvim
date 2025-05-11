@@ -3,8 +3,9 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	'christoomey/vim-tmux-navigator',
-	'tpope/vim-fugitive',
-	'tversteeg/registers.nvim',
-	'dyng/ctrlsf.vim',
+	'mfussenegger/nvim-dap',
+	'leoluz/nvim-dap-go',
+	'nvim-neotest/nvim-nio',
+	'rcarriga/nvim-dap-ui',
+	'theHamsta/nvim-dap-virtual-text',
 }
