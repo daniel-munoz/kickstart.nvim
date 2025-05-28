@@ -1086,3 +1086,11 @@ vim.keymap.set('n', '<M-8>', ':CtrlSF<CR>', { silent = true })
 vim.keymap.set('v', '<M-9>', '<Plug>CtrlSFVwordExec', { silent = true })
 
 require 'hydras'
+
+vim.ui.select = require('mini.pick').ui_select
+
+-- GitHub Copilot Chat keymaps
+vim.keymap.set('n', '<leader>cc', '<cmd>CopilotChatToggle<CR>', { desc = '[C]opilot [C]hat Toggle' })
+vim.keymap.set('n', '<leader>cL', '<cmd>CopilotChatLoad<CR>', { desc = '[C]opilot Chat [L]oad' })
+vim.keymap.set('n', '<leader>cs', '<cmd>CopilotChatSave<CR>', { desc = '[C]opilot Chat [S]ave' })
+vim.keymap.set({ 'n', 'v' }, '<leader>cp', '<cmd>CopilotChatPrompts<CR>', { desc = '[C]opilot Chat [P]rompts' })
