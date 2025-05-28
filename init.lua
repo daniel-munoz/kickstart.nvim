@@ -539,25 +539,32 @@ require('lazy').setup({
           --  Most Language Servers support renaming across files, etc.
           map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
 
+          vim.keymap.set('n', '<S-F6>', ':lua vim.lsp.buf.rename()<CR>') -- , {silent = true}) -- Rename variable
+          vim.keymap.set('n', '<leader>ff', ':lua vim.lsp.buf.format()<CR>', { silent = true }) -- Format files
+
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
           -- Find references for the word under your cursor.
           map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          map('gR', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
           map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
 
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
           map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
@@ -571,6 +578,7 @@ require('lazy').setup({
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
           map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+          map('gT', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
 
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
           ---@param client vim.lsp.Client
@@ -984,7 +992,7 @@ require('lazy').setup({
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
@@ -1014,3 +1022,67 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+-- Keybinds to make split navigation easier.
+--  Use CTRL+<hjkl> to switch between windows
+--
+--  See `:help wincmd` for a list of all window commands
+vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
+-- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
+-- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
+-- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
+-- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+
+-- keymaps for splits and tabs
+-- window management
+vim.keymap.set('n', '<leader>sv', '<C-w>v', { desc = '[S]plit Window [V]ertically' }) -- split window vertically
+vim.keymap.set('n', '<leader>s-', '<C-w>s', { desc = '[S]plit Window [-]Horizontally' }) -- split window horizontally
+vim.keymap.set('n', '<leader>se', '<C-w>=', { desc = 'Make [S]plit Windows [E]qual' }) -- make split windows equal width & height
+vim.keymap.set('n', '<leader>sx', ':close<CR>', { desc = 'Close Split Window' }) -- close current split window
+-- tabs
+vim.keymap.set('n', '<leader>to', ':tabnew<CR>') -- open new tab
+vim.keymap.set('n', '<leader>tx', ':tabclose<CR>') -- close current tab
+vim.keymap.set('n', '<leader>tn', ':tabn<CR>') --  go to next tab
+vim.keymap.set('n', '<leader>tp', ':tabp<CR>') --  go to previous tab
+
+-- Setup nvterm with pcall to handle potential errors
+vim.keymap.set('n', '<leader>tt', function()
+  local ok, nvterm = pcall(require, 'nvterm.terminal')
+  if ok then
+    nvterm.toggle 'horizontal'
+  else
+    vim.notify('nvterm not available', vim.log.levels.WARN)
+  end
+end, { silent = true, desc = 'Toggle horizontal terminal' })
+
+vim.keymap.set('n', '<leader>tf', function()
+  local ok, nvterm = pcall(require, 'nvterm.terminal')
+  if ok then
+    nvterm.toggle 'float'
+  else
+    vim.notify('nvterm not available', vim.log.levels.WARN)
+  end
+end, { silent = true, desc = 'Toggle floating terminal' })
+
+-- keymaps for NvimTree
+vim.keymap.set('n', '<M-1>', ':NvimTreeToggle<CR>', { silent = true }) -- open file explorer
+vim.keymap.set('n', '<M-2>', ':NvimTreeFindFile<CR>', { silent = true }) -- open file explorer
+vim.keymap.set('n', '<leader>fx', ':NvimTreeOpen<CR>') -- open file explorer
+
+-- keymaps for Aerial
+vim.keymap.set('n', '<M-3>', ':AerialToggle!<CR>', { silent = true }) -- open aerial
+vim.keymap.set('n', '<M-4>', ':AerialToggle<CR>', { silent = true }) -- open aerial
+
+-- keumaps for CtrlS
+vim.g.ctrlsf_default_root = 'project'
+vim.keymap.set('n', '<leader>fa', '<Plug>CtrlSFPrompt', { desc = '[F]ind in [A]ll files', silent = true })
+vim.keymap.set('n', '<leader>fg', ':CtrlSFToggle<CR>', { desc = '[F]ind window To[g]gle', silent = true })
+vim.keymap.set('n', '<M-8>', ':CtrlSF<CR>', { silent = true })
+vim.keymap.set('v', '<M-9>', '<Plug>CtrlSFVwordExec', { silent = true })
+
+require 'hydras'
