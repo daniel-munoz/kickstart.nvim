@@ -1091,6 +1091,13 @@ vim.ui.select = require('mini.pick').ui_select
 
 -- GitHub Copilot Chat keymaps
 vim.keymap.set('n', '<leader>cc', '<cmd>CopilotChatToggle<CR>', { desc = '[C]opilot [C]hat Toggle' })
-vim.keymap.set('n', '<leader>cL', '<cmd>CopilotChatLoad<CR>', { desc = '[C]opilot Chat [L]oad' })
+vim.keymap.set('n', '<leader>cl', '<cmd>CopilotChatLoad<CR>', { desc = '[C]opilot Chat [L]oad' })
 vim.keymap.set('n', '<leader>cs', '<cmd>CopilotChatSave<CR>', { desc = '[C]opilot Chat [S]ave' })
-vim.keymap.set({ 'n', 'v' }, '<leader>cp', '<cmd>CopilotChatPrompts<CR>', { desc = '[C]opilot Chat [P]rompts' })
+vim.keymap.set('n', '<leader>cm', '<cmd>CopilotChatModels<CR>', { desc = '[C]opilot Chat [M]odels' })
+vim.keymap.set('n', '<leader>cp', '<cmd>CopilotChatPrompts<CR>', { desc = '[C]opilot Chat [P]rompts', silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>ce', '<cmd>CopilotChatExplain<CR>', { desc = '[C]opilot Chat [E]xplain', silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>cf', '<cmd>CopilotChatFix<CR>', { desc = '[C]opilot Chat [F]ix', silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>cr', '<cmd>CopilotChatRefactor<CR>', { desc = '[C]opilot Chat [R]efactor', silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>cv', '<cmd>CopilotChatReview<CR>', { desc = '[C]opilot Chat Re[V]iew', silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>co', '<cmd>CopilotChatOptimize<CR>', { desc = '[C]opilot Chat [O]ptimize', silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>ct', '<cmd>CopilotChatTests<CR>', { desc = '[C]opilot Chat [T]ests', silent = true })

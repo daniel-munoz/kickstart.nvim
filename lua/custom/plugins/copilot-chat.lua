@@ -11,19 +11,27 @@ return {
 
       system_prompt = 'COPILOT_INSTRUCTIONS', -- System prompt to use (can be specified manually in prompt via /).
 
-      model = 'gpt-4.1', -- Default model to use, see ':CopilotChatModels' for available models (can be specified manually in prompt via $).
+      model = 'claude-3.7-sonnet', -- Default model to use, see ':CopilotChatModels' for available models (can be specified manually in prompt via $).
       agent = 'copilot', -- Default agent to use, see ':CopilotChatAgents' for available agents (can be specified manually in prompt via @).
       context = nil, -- Default context or array of contexts to use (can be specified manually in prompt via #).
       sticky = nil, -- Default sticky prompt or array of sticky prompts to use at start of every new chat.
 
+      -- Model parameters
       temperature = 0.1, -- GPT result temperature
-      headless = false, -- Do not write to chat buffer and use history (useful for using custom processing)
-      stream = nil, -- Function called when receiving stream updates (returned string is appended to the chat buffer)
-      callback = nil, -- Function called when full response is received (retuned string is stored to history)
+
+      -- UI and behavior
+      headless = false, -- Do not write to chat buffer; use history (for custom processing)
       remember_as_sticky = true, -- Remember model/agent/context as sticky prompts when asking questions
 
+      -- Callbacks
+      stream = nil, -- Called on stream updates (returned string is appended to chat buffer)
+      callback = nil, -- Called when full response is received (returned string is stored to history)
       -- see select.lua for implementation
-      selection = visual,
+      -- selection = visual,
+      selection = function(source)
+        local select = require 'CopilotChat.select'
+        return select.visual(source) or select.buffer(source)
+      end,
 
       -- default window options
       window = {
@@ -124,7 +132,7 @@ return {
       -- see config/mappings.lua for implementation
       mappings = {
         complete = {
-          insert = '<Tab>',
+          insert = '<M-CR>',
         },
         close = {
           normal = 'q',
@@ -179,58 +187,3 @@ return {
     -- See Commands section for default commands if you want to lazy load on them
   },
 }
-
---[[
-      debug = false,
-      auto_start = false,
-      window = {
-        border = "rounded",
-        width = 80,
-        height = 20,
-      },
-      mappings = {
-        close = "<Esc>",
-        submit = "<CR>",
-        next_message = "<Tab>",
-        prev_message = "<S-Tab>",
-        yank_last = { "n", "<leader>cy" },
-        -- Keymap to open the prompt selection
-        select_prompt = { "n", "<leader>cp" },
-      },
-      prompts = {
-        Explain = {
-          prompt = "Explain the following code: %s",
-          description = "Explain selected code", -- Optional description for the picker
-        },
-        Tests = {
-          prompt = "Write unit tests for the following code, using the prevalent testing framework: %s",
-          description = "Generate unit tests",
-        },
-        Refactor = {
-          prompt = "Refactor the following code to improve readability and maintainability: %s",
-          description = "Refactor selected code",
-        },
-        Docstring = {
-          prompt = "Generate a comprehensive docstring for the following code: %s",
-          description = "Generate docstring",
-        },
-        FixBugs = {
-          prompt = "Identify and fix potential bugs in the following code: %s",
-          description = "Fix bugs in selected code",
-        },
-        CustomAgent = { -- You can name them whatever you like
-          prompt = "You are a helpful assistant specialized in Lua. Answer the following question about Lua: %s",
-          description = "Ask a Lua expert",
-          -- You might be able to specify if it should take selection or be a general prompt
-          -- selection = false, -- (This depends on plugin implementation)
-        },
-        CustomAgent = { -- You can name them whatever you like
-          prompt = "You are a helpful assistant specialized in Golang. Answer the following question about Go: %s",
-          description = "Ask a Go expert",
-          -- You might be able to specify if it should take selection or be a general prompt
-          -- selection = false, -- (This depends on plugin implementation)
-        }
-      },
-      -- model = "gpt-4", -- Uncomment if you want to specify a model
-      -- history_path = vim.fn.stdpath("data") .. "/copilot-chat-history.json",
---]]
