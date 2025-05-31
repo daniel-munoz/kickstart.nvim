@@ -23,6 +23,9 @@ return {
       max_completion_tokens = 100000, -- Increase this to include reasoning tokens (for reasoning models)
       --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
     },
+    copilot = {
+      model = 'claude-3-7-sonnet-latest',
+    },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = 'make',
