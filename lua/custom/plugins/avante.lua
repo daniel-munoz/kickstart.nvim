@@ -24,7 +24,7 @@ return {
       --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
     },
     copilot = {
-      model = 'claude-3-7-sonnet-latest',
+      model = 'claude-3.7-sonnet', -- Default model to use for copilot
     },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
