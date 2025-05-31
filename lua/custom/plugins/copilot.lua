@@ -1,5 +1,6 @@
 return {
 	"zbirenbaum/copilot.lua",
+	enabled = vim.fn.getenv("NVIM_COPILOT") == "true",
 	cmd = "Copilot",
 	event = "InsertEnter",
 	config = function()
