@@ -1,7 +1,7 @@
 return {
   'yetone/avante.nvim',
   enabled = vim.fn.getenv 'NVIM_AVANTE' == 'true',
-  event = { 'InsertEnter', 'CmdlineEnter' }, -- More specific events for better lazy-loading
+  event = { 'BufReadPost', 'CmdlineEnter' }, -- More specific events for better lazy-loading
   version = false, -- Never set this value to "*"! Never!
   opts = {
     provider = 'copilot', -- Default provider
@@ -27,6 +27,15 @@ return {
       model = 'gemini-2.5-pro',
       debounce_ms = 200, -- Add debounce for potentially better performance
       suggestion_auto_trigger = true, -- Enable auto-triggering if supported
+    },
+
+    gemini = {
+      endpoint = 'https://generativelanguage.googleapis.com/v1beta',
+      api_key_name = 'GEMINI_API_KEY', -- Instructs Avante to use vim.fn.getenv('GEMINI_API_KEY')
+      model = 'gemini-2.5-flash-preview-05-20',
+      temperature = 0, -- 0 for deterministic responses
+      max_output_tokens = 65536, -- Max tokens for Gemini models, can be adjusted
+      timeout = 60000, -- 60 seconds timeout
     },
 
     -- UI configurations
@@ -68,7 +77,7 @@ return {
     -- Image pasting
     {
       'HakonHarnes/img-clip.nvim',
-      event = 'InsertEnter', -- Load when entering insert mode, or map to a command/key
+      event = 'BufReadPost', -- Load when entering insert mode, or map to a command/key
       opts = {
         default = {
           embed_image_as_base64 = false,
