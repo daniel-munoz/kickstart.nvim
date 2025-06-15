@@ -7,35 +7,43 @@ return {
     provider = 'copilot', -- Default provider
 
     -- Model configurations
-    claude = {
-      -- endpoint = 'https://api.anthropic.com', -- Ensure this is configured if needed
-      model = 'claude-3-7-sonnet-latest',
-      temperature = 0, -- 0 for deterministic responses
-      max_tokens = 32768, -- Optimized token limit (reduced from 64k)
-      timeout = 60000, -- 60 second timeout (increased from 30s)
-    },
+    providers = {
+      claude = {
+        -- endpoint = 'https://api.anthropic.com', -- Ensure this is configured if needed
+        model = 'claude-3-7-sonnet-latest',
+        extra_request_body = {
+          temperature = 0, -- 0 for deterministic responses
+          max_tokens = 32768, -- Optimized token limit (reduced from 64k)
+          timeout = 60000, -- 60 second timeout (increased from 30s)
+        },
+      },
 
-    openai = {
-      endpoint = 'https://api.openai.com/v1',
-      model = 'codex-mini-latest',
-      temperature = 0, -- 0 for deterministic responses
-      max_completion_tokens = 100000,
-      timeout = 45000, -- 45 second timeout (adjusted from 30s)
-    },
+      openai = {
+        endpoint = 'https://api.openai.com/v1',
+        model = 'codex-mini-latest',
+        extra_request_body = {
+          temperature = 0, -- 0 for deterministic responses
+          max_completion_tokens = 100000,
+          timeout = 45000, -- 45 second timeout (adjusted from 30s)
+        },
+      },
 
-    copilot = {
-      model = 'gemini-2.5-pro',
-      debounce_ms = 200, -- Add debounce for potentially better performance
-      suggestion_auto_trigger = true, -- Enable auto-triggering if supported
-    },
+      copilot = {
+        model = 'gemini-2.5-pro',
+        debounce_ms = 200, -- Add debounce for potentially better performance
+        suggestion_auto_trigger = true, -- Enable auto-triggering if supported
+      },
 
-    gemini = {
-      endpoint = 'https://generativelanguage.googleapis.com/v1beta',
-      api_key_name = 'GEMINI_API_KEY', -- Instructs Avante to use vim.fn.getenv('GEMINI_API_KEY')
-      model = 'gemini-2.5-flash-preview-05-20',
-      temperature = 0, -- 0 for deterministic responses
-      max_output_tokens = 65536, -- Max tokens for Gemini models, can be adjusted
-      timeout = 60000, -- 60 seconds timeout
+      gemini = {
+        endpoint = 'https://generativelanguage.googleapis.com/v1beta',
+        api_key_name = 'GEMINI_API_KEY', -- Instructs Avante to use vim.fn.getenv('GEMINI_API_KEY')
+        model = 'gemini-2.5-flash-preview-05-20',
+        extra_request_body = {
+          temperature = 0, -- 0 for deterministic responses
+          max_output_tokens = 65536, -- Max tokens for Gemini models, can be adjusted
+          timeout = 60000, -- 60 seconds timeout
+        },
+      },
     },
 
     -- UI configurations
