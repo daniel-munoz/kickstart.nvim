@@ -1110,6 +1110,4 @@ vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 
-vim.keymap.set('n', '<leader>lc', '<cmd>ClaudeCode<CR>', { desc = 'C[l]aude [C]ode' })
-vim.keymap.set('n', '<leader>ln', '<cmd>ClaudeCodeContinue<CR>', { desc = 'C[l]aude Code Co[n]tinue' })
-vim.keymap.set('n', '<leader>lr', '<cmd>ClaudeCodeResume<CR>', { desc = 'C[l]aude Code [R]esume' })
+vim.keymap.set('n', '<leader>Cr', '<cmd>ClaudeCodeResume<CR>', { desc = 'Claude Code: Resume' })
