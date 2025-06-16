@@ -1,14 +1,37 @@
-# kickstart.nvim
+# kickstart.nvim (AI-Enhanced Fork)
 
 ## Introduction
 
-A starting point for Neovim that is:
+A customized starting point for Neovim that is:
 
 * Small
 * Single-file
 * Completely Documented
+* **AI-Enhanced** with Claude Code, GitHub Copilot, and Avante integration
+* **Environment-gated** for conditional feature activation
 
-**NOT** a Neovim distribution, but instead a starting point for your configuration.
+**NOT** a Neovim distribution, but instead a sophisticated starting point for AI-powered development workflows.
+
+## Key Features
+
+This fork extends the original kickstart.nvim with:
+
+### 🤖 AI Assistant Integration
+- **Claude Code**: Direct integration with Claude for coding assistance (environment-gated)
+- **GitHub Copilot**: Full code completion and chat capabilities  
+- **Avante**: Multi-provider AI assistant (Claude, OpenAI, Copilot, Gemini)
+
+### 🚀 Enhanced Productivity
+- **Advanced Navigation**: File tree (NvimTree), code outline (Aerial), fuzzy finding (Telescope)
+- **Terminal Integration**: Floating and split terminals with seamless workflow
+- **Search & Replace**: Powerful search with CtrlSF
+- **Git Integration**: Enhanced git workflow with vim-fugitive
+
+### ⚙️ Environment-Based Configuration
+Features are conditionally enabled via environment variables:
+- `PROJECT_CONTEXT=personal` - Enables Claude Code integration
+- `NVIM_COPILOT=true` - Enables GitHub Copilot features
+- `NVIM_AVANTE=true` - Enables Avante AI assistant
 
 ## Installation
 
@@ -26,13 +49,18 @@ External Requirements:
 - [ripgrep](https://github.com/BurntSushi/ripgrep#installation),
   [fd-find](https://github.com/sharkdp/fd#installation)
 - Clipboard tool (xclip/xsel/win32yank or other depending on the platform)
-- A [Nerd Font](https://www.nerdfonts.com/): optional, provides various icons
-  - if you have it set `vim.g.have_nerd_font` in `init.lua` to true
+- A [Nerd Font](https://www.nerdfonts.com/): **Required** for icons in file tree and UI
+  - Set `vim.g.have_nerd_font = true` in `init.lua` (default in this fork)
 - Emoji fonts (Ubuntu only, and only if you want emoji!) `sudo apt install fonts-noto-color-emoji`
 - Language Setup:
   - If you want to write Typescript, you need `npm`
   - If you want to write Golang, you will need `go`
   - etc.
+
+#### AI Assistant Setup (Optional)
+- **Claude Code**: Set `PROJECT_CONTEXT=personal` environment variable
+- **GitHub Copilot**: Set `NVIM_COPILOT=true` and authenticate with `:Copilot auth`
+- **Avante**: Set `NVIM_AVANTE=true` and configure API keys for desired providers
 
 > [!NOTE]
 > See [Install Recipes](#Install-Recipes) for additional Windows and Linux specific notes
@@ -58,23 +86,19 @@ so that you have your own copy that you can modify, then install by cloning the
 fork to your machine using one of the commands below, depending on your OS.
 
 > [!NOTE]
-> Your fork's URL will be something like this:
-> `https://github.com/<your_github_username>/kickstart.nvim.git`
+> This fork's URL is: `https://github.com/daniel-munoz/kickstart.nvim.git`
 
-You likely want to remove `lazy-lock.json` from your fork's `.gitignore` file
-too - it's ignored in the kickstart repo to make maintenance easier, but it's
-[recommended to track it in version control](https://lazy.folke.io/usage/lockfile).
+> [!IMPORTANT]  
+> This fork tracks `lazy-lock.json` in version control for reproducible plugin versions.
+> The `.gitignore` has been updated to include this file, ensuring consistent plugin
+> versions across different installations.
 
-#### Clone kickstart.nvim
-
-> [!NOTE]
-> If following the recommended step above (i.e., forking the repo), replace
-> `nvim-lua` with `<your_github_username>` in the commands below
+#### Clone This Fork
 
 <details><summary> Linux and Mac </summary>
 
 ```sh
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/daniel-munoz/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
 </details>
@@ -84,13 +108,13 @@ git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HO
 If you're using `cmd.exe`:
 
 ```
-git clone https://github.com/nvim-lua/kickstart.nvim.git "%localappdata%\nvim"
+git clone https://github.com/daniel-munoz/kickstart.nvim.git "%localappdata%\nvim"
 ```
 
 If you're using `powershell.exe`
 
 ```
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
+git clone https://github.com/daniel-munoz/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
 ```
 
 </details>
@@ -116,9 +140,39 @@ examples of adding popularly requested plugins.
 > For more information about a particular plugin check its repository's documentation.
 
 
+## Key Keybindings
+
+This fork includes extensive custom keybindings for enhanced productivity:
+
+### AI Assistants
+- `<leader>cc` - Open Copilot Chat
+- `<leader>lc` - Toggle Claude Code panel
+
+### Navigation & Files  
+- `<M-1>` - Toggle file tree (NvimTree)
+- `<M-2>` - Focus file tree
+- `<M-3>` - Toggle code outline (Aerial) 
+- `<M-4>` - Focus code outline
+- `<leader>sf` - Find files (Telescope)
+- `<leader>sg` - Live grep (Telescope)
+- `<leader>fa` - Find in all files (CtrlSF)
+
+### Terminal Integration
+- `<leader>tt` - Horizontal terminal
+- `<leader>tf` - Floating terminal
+- `<leader>tv` - Vertical terminal
+
+### Window Management
+- `<C-Up/Down/Left/Right>` - Resize windows
+- `<leader>sv` - Split vertically
+- `<leader>sh` - Split horizontally
+
 ### Getting Started
 
 [The Only Video You Need to Get Started with Neovim](https://youtu.be/m8C0Cq9Uv9o)
+
+> [!TIP]
+> Press `<leader>` (space by default) in normal mode to see available keybindings with which-key.
 
 ### FAQ
 
@@ -126,35 +180,37 @@ examples of adding popularly requested plugins.
   * You should back it up and then delete all associated files.
   * This includes your existing init.lua and the Neovim files in `~/.local`
     which can be deleted with `rm -rf ~/.local/share/nvim/`
-* Can I keep my existing configuration in parallel to kickstart?
+* **Can I keep my existing configuration in parallel to this fork?**
   * Yes! You can use [NVIM_APPNAME](https://neovim.io/doc/user/starting.html#%24NVIM_APPNAME)`=nvim-NAME`
-    to maintain multiple configurations. For example, you can install the kickstart
-    configuration in `~/.config/nvim-kickstart` and create an alias:
+    to maintain multiple configurations. For example, you can install this fork in
+    `~/.config/nvim-kickstart-ai` and create an alias:
+    ```bash
+    alias nvim-ai='NVIM_APPNAME="nvim-kickstart-ai" nvim'
     ```
-    alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
-    ```
-    When you run Neovim using `nvim-kickstart` alias it will use the alternative
-    config directory and the matching local directory
-    `~/.local/share/nvim-kickstart`. You can apply this approach to any Neovim
-    distribution that you would like to try out.
-* What if I want to "uninstall" this configuration:
+
+* **How do I enable AI features?**
+  * **Claude Code**: Set `export PROJECT_CONTEXT=personal` in your shell profile
+  * **GitHub Copilot**: Set `export NVIM_COPILOT=true` and run `:Copilot auth` in Neovim
+  * **Avante**: Set `export NVIM_AVANTE=true` and configure API keys for desired providers
+
+* **Why are AI features environment-gated?**
+  * This allows selective activation of AI assistants based on project context or personal preference
+  * Prevents accidental activation in restricted environments or when API costs are a concern
+  * Keeps the configuration flexible for different use cases
+
+* **What if I want to "uninstall" this configuration?**
   * See [lazy.nvim uninstall](https://lazy.folke.io/usage#-uninstalling) information
-* Why is the kickstart `init.lua` a single file? Wouldn't it make sense to split it into multiple files?
-  * The main purpose of kickstart is to serve as a teaching tool and a reference
-    configuration that someone can easily use to `git clone` as a basis for their own.
-    As you progress in learning Neovim and Lua, you might consider splitting `init.lua`
-    into smaller parts. A fork of kickstart that does this while maintaining the
-    same functionality is available here:
-    * [kickstart-modular.nvim](https://github.com/dam9000/kickstart-modular.nvim)
-  * Discussions on this topic can be found here:
-    * [Restructure the configuration](https://github.com/nvim-lua/kickstart.nvim/issues/218)
-    * [Reorganize init.lua into a multi-file setup](https://github.com/nvim-lua/kickstart.nvim/pull/473)
+
+* **Why is the `init.lua` still a single file despite all the additions?**
+  * Maintains the educational philosophy of kickstart.nvim - everything visible in one place
+  * Custom plugins are modularized in `lua/custom/plugins/` for organization
+  * Advanced users can further modularize as needed
 
 ### Install Recipes
 
 Below you can find OS specific install instructions for Neovim and dependencies.
 
-After installing all the dependencies continue with the [Install Kickstart](#Install-Kickstart) step.
+After installing all the dependencies continue with the [Clone This Fork](#Clone-This-Fork) step.
 
 #### Windows Installation
 
