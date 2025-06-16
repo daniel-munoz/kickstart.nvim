@@ -146,7 +146,7 @@ This fork includes extensive custom keybindings for enhanced productivity:
 
 ### AI Assistants
 - `<leader>cc` - Open Copilot Chat
-- `<leader>lc` - Toggle Claude Code panel
+- `<leader>Cc` - Toggle Claude Code panel
 
 ### Navigation & Files  
 - `<M-1>` - Toggle file tree (NvimTree)
@@ -160,12 +160,11 @@ This fork includes extensive custom keybindings for enhanced productivity:
 ### Terminal Integration
 - `<leader>tt` - Horizontal terminal
 - `<leader>tf` - Floating terminal
-- `<leader>tv` - Vertical terminal
 
 ### Window Management
 - `<C-Up/Down/Left/Right>` - Resize windows
 - `<leader>sv` - Split vertically
-- `<leader>sh` - Split horizontally
+- `<leader>s-` - Split horizontally
 
 ### Getting Started
 

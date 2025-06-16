@@ -51,7 +51,7 @@ This is a configuration project without traditional build/test commands. Develop
 
 ## Important Keybindings
 
-- **AI Assistants**: `<leader>cc` (Copilot Chat), `<leader>lc` (Claude Code)
+- **AI Assistants**: `<leader>cc` (Copilot Chat), `<leader>Cc` (Claude Code)
 - **File Navigation**: `<M-1>` (File tree), `<M-3>` (Code outline)  
 - **Terminal**: `<leader>tt` (horizontal), `<leader>tf` (floating)
 - **Search**: `<leader>sf` (files), `<leader>sg` (grep), `<leader>fa` (find all)
