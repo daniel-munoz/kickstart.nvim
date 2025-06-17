@@ -1,6 +1,6 @@
 return {
   'yetone/avante.nvim',
-  enabled = vim.fn.getenv 'NVIM_AVANTE' == 'true',
+  enabled = vim.fn.getenv 'PROJECT_CONTEXT' == 'personal',
   event = { 'BufReadPost', 'CmdlineEnter' }, -- More specific events for better lazy-loading
   version = false, -- Never set this value to "*"! Never!
   opts = {
