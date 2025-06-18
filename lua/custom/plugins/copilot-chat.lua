@@ -1,7 +1,7 @@
 return {
   {
     'CopilotC-Nvim/CopilotChat.nvim',
-    enabled = vim.fn.getenv 'PROJECT_CONTEXT' == 'personal',
+    enabled = false, -- vim.fn.getenv 'PROJECT_CONTEXT' == 'personal',
     dependencies = {
       { 'zbirenbaum/copilot.lua' },
       { 'nvim-lua/plenary.nvim', branch = 'master' }, -- for curl, log and async functions

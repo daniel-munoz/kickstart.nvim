@@ -694,20 +694,20 @@ require('lazy').setup({
         -- ts_ls = {},
         --
 
-        lua_ls = {
+        -- lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
           -- capabilities = {},
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
+        --   settings = {
+        --     Lua = {
+        --       completion = {
+        --         callSnippet = 'Replace',
+        --       },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               -- diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
+        --     },
+        --   },
+        -- },
       }
 
       -- Ensure the servers and tools above are installed
@@ -725,7 +725,7 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        -- 'stylua', -- Used to format Lua code
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -777,7 +777,7 @@ require('lazy').setup({
         end
       end,
       formatters_by_ft = {
-        lua = { 'stylua' },
+        --- lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -954,7 +954,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -1092,6 +1092,7 @@ require 'hydras'
 vim.ui.select = require('mini.pick').ui_select
 
 -- GitHub Copilot Chat keymaps
+--[[
 vim.keymap.set('n', '<leader>cc', '<cmd>CopilotChatToggle<CR>', { desc = '[C]opilot [C]hat Toggle' })
 vim.keymap.set('n', '<leader>cl', '<cmd>CopilotChatLoad<CR>', { desc = '[C]opilot Chat [L]oad' })
 vim.keymap.set('n', '<leader>cs', '<cmd>CopilotChatSave<CR>', { desc = '[C]opilot Chat [S]ave' })
@@ -1103,6 +1104,7 @@ vim.keymap.set({ 'n', 'v' }, '<leader>cr', '<cmd>CopilotChatRefactor<CR>', { des
 vim.keymap.set({ 'n', 'v' }, '<leader>cv', '<cmd>CopilotChatReview<CR>', { desc = '[C]opilot Chat Re[V]iew', silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>co', '<cmd>CopilotChatOptimize<CR>', { desc = '[C]opilot Chat [O]ptimize', silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>ct', '<cmd>CopilotChatTests<CR>', { desc = '[C]opilot Chat [T]ests', silent = true })
+--]]
 
 -- Block movement keymaps
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
