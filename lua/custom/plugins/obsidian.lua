@@ -10,8 +10,8 @@ return {
     -- refer to `:h file-pattern` for more examples
     'BufReadPre '
       .. vim.fn.expand '~'
-      .. '/Dropbox/Personal/Notes/ObsidianVault/Main/*.md',
-    'BufNewFile ' .. vim.fn.expand '~' .. '/Dropbox/Personal/Notes/ObsidianVault/Main/*.md',
+      .. '/Dropbox/Personal/Notes/ObsidianVault/*.md',
+    'BufNewFile ' .. vim.fn.expand '~' .. '/Dropbox/Personal/Notes/ObsidianVault/*.md',
   },
   dependencies = {
     -- Required.
