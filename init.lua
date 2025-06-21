@@ -1333,7 +1333,7 @@ require('obsidian').setup {
 vim.keymap.set('n', '<leader>on', ':ObsidianNew<CR>', { desc = '[O]bsidian [N]ew Note' })
 vim.keymap.set('n', '<leader>ol', ':ObsidianLinks<CR>', { desc = '[O]bsidian [L]inks' })
 vim.keymap.set('n', '<leader>ob', ':ObsidianBacklinks<CR>', { desc = '[O]bsidian [B]ack Links' })
-vim.keymap.set('n', '<leader>op', ':ObsidianPasteImg<CR>', { desc = '[O]bsidian [P]aste Imagen' })
+vim.keymap.set('n', '<leader>op', ':ObsidianPasteImg<CR>', { desc = '[O]bsidian [P]aste Image' })
 vim.keymap.set('n', '<leader>os', ':ObsidianSearch<CR>', { desc = '[O]bsidian [S]earch' })
 vim.keymap.set('n', '<leader>ot', ':ObsidianTags<CR>', { desc = '[O]bsidian [T]ags' })
 -- keymaps for Obsidian on selected text
