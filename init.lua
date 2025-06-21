@@ -1111,3 +1111,231 @@ vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 
 vim.keymap.set('n', '<leader>Cr', '<cmd>ClaudeCodeResume<CR>', { desc = 'Claude Code: Resume' })
+
+vim.opt.conceallevel = 1
+
+require('obsidian').setup {
+  -- A list of workspace names, paths, and configuration overrides.
+  -- If you use the Obsidian app, the 'path' of a workspace should generally be
+  -- your vault root (where the `.obsidian` folder is located).
+  -- When obsidian.nvim is loaded by your plugin manager, it will automatically set
+  -- the workspace to the first workspace in the list whose `path` is a parent of the
+  -- current markdown file being edited.
+  workspaces = {
+    {
+      name = 'Main',
+      path = '/Users/danielm/Dropbox/Personal/Notes/ObsidianVault/Main',
+    },
+    {
+      name = 'Momo',
+      path = '/Users/danielm/Dropbox/Personal/Notes/ObsidianVault/Momo',
+    },
+    {
+      name = 'Work',
+      path = '/Users/danielm/Dropbox/Personal/Notes/ObsidianVault/Work',
+    },
+  },
+
+  -- Optional, set the log level for obsidian.nvim. This is an integer corresponding to one of the log
+  -- levels defined by "vim.log.levels.*".
+  log_level = vim.log.levels.INFO,
+
+  -- Optional, configure key mappings. These are the defaults. If you don't want to set any keymappings this
+  -- way then set 'mappings = {}'.
+  mappings = {
+    -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
+    ['gf'] = {
+      action = function()
+        return require('obsidian').util.gf_passthrough()
+      end,
+      opts = { noremap = false, expr = true, buffer = true },
+    },
+    -- Toggle check-boxes.
+    ['<leader>ch'] = {
+      action = function()
+        return require('obsidian').util.toggle_checkbox()
+      end,
+      opts = { buffer = true },
+    },
+    -- Smart action depending on context, either follow link or toggle checkbox.
+    ['<cr>'] = {
+      action = function()
+        return require('obsidian').util.smart_action()
+      end,
+      opts = { buffer = true, expr = true },
+    },
+  },
+
+  -- Where to put new notes. Valid options are
+  --  * "current_dir" - put new notes in same directory as the current buffer.
+  --  * "notes_subdir" - put new notes in the default notes subdirectory.
+  new_notes_location = 'current_dir',
+
+  -- Optional, customize how note IDs are generated given an optional title.
+  ---@param title string|?
+  ---@return string
+  note_id_func = function(title)
+    -- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
+    -- In this case a note with the title 'My new note' will be given an ID that looks
+    -- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
+    local suffix = ''
+    if title ~= nil then
+      -- If title is given, transform it into valid file name.
+      suffix = title:gsub(' ', '-')
+    else
+      -- If title is nil, just add 4 random uppercase letters to the suffix.
+      for _ = 1, 4 do
+        suffix = suffix .. string.char(math.random(65, 90))
+      end
+    end
+    return suffix
+  end,
+
+  -- Optional, customize how note file names are generated given the ID, target directory, and title.
+  ---@param spec { id: string, dir: obsidian.Path, title: string|? }
+  ---@return string|obsidian.Path The full path to the new note.
+  note_path_func = function(spec)
+    -- This is equivalent to the default behavior.
+    local path = spec.dir / tostring(spec.id)
+    return path:with_suffix '.md'
+  end,
+
+  -- Optional, customize how wiki links are formatted. You can set this to one of:
+  --  * "use_alias_only", e.g. '[[Foo Bar]]'
+  --  * "prepend_note_id", e.g. '[[foo-bar|Foo Bar]]'
+  --  * "prepend_note_path", e.g. '[[foo-bar.md|Foo Bar]]'
+  --  * "use_path_only", e.g. '[[foo-bar.md]]'
+  -- Or you can set it to a function that takes a table of options and returns a string, like this:
+  wiki_link_func = 'use_alias_only',
+
+  -- Either 'wiki' or 'markdown'.
+  preferred_link_style = 'wiki',
+
+  -- Optional, boolean or a function that takes a filename and returns a boolean.
+  -- `true` indicates that you don't want obsidian.nvim to manage frontmatter.
+  disable_frontmatter = false,
+
+  -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
+  -- URL it will be ignored but you can customize this behavior here.
+  ---@param url string
+  follow_url_func = function(url)
+    -- Open the URL in the default web browser.
+    vim.fn.jobstart { 'open', url } -- Mac OS
+    -- vim.fn.jobstart({"xdg-open", url})  -- linux
+    -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
+    -- vim.ui.open(url) -- need Neovim 0.10.0+
+  end,
+
+  -- Optional, by default when you use `:ObsidianFollowLink` on a link to an image
+  -- file it will be ignored but you can customize this behavior here.
+  ---@param img string
+  follow_img_func = function(img)
+    vim.fn.jobstart { 'qlmanage', '-p', img } -- Mac OS quick look preview
+    -- vim.fn.jobstart({"xdg-open", url})  -- linux
+    -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
+  end,
+
+  -- Optional, set to true to force ':ObsidianOpen' to bring the app to the foreground.
+  open_app_foreground = false,
+
+  picker = {
+    -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
+    name = 'telescope.nvim',
+    -- Optional, configure key mappings for the picker. These are the defaults.
+    -- Not all pickers support all mappings.
+    note_mappings = {
+      -- Create a new note from your query.
+      new = '<C-x>',
+      -- Insert a link to the selected note.
+      insert_link = '<C-l>',
+    },
+    tag_mappings = {
+      -- Add tag(s) to current note.
+      tag_note = '<C-x>',
+      -- Insert a tag at the current location.
+      insert_tag = '<C-l>',
+    },
+  },
+
+  -- Optional, sort search results by "path", "modified", "accessed", or "created".
+  -- The recommend value is "modified" and `true` for `sort_reversed`, which means, for example,
+  -- that `:ObsidianQuickSwitch` will show the notes sorted by latest modified time
+  sort_by = 'modified',
+  sort_reversed = true,
+
+  -- Set the maximum number of lines to read from notes on disk when performing certain searches.
+  search_max_lines = 1000,
+
+  -- Optional, determines how certain commands open notes. The valid options are:
+  -- 1. "current" (the default) - to always open in the current window
+  -- 2. "vsplit" - to open in a vertical split if there's not already a vertical split
+  -- 3. "hsplit" - to open in a horizontal split if there's not already a horizontal split
+  open_notes_in = 'vsplit',
+
+  -- Optional, define your own callbacks to further customize behavior.
+  callbacks = {
+    -- Runs at the end of `require("obsidian").setup()`.
+    ---@param client obsidian.Client
+    post_setup = function(client) end,
+
+    -- Runs anytime you enter the buffer for a note.
+    ---@param client obsidian.Client
+    ---@param note obsidian.Note
+    enter_note = function(client, note) end,
+
+    -- Runs anytime you leave the buffer for a note.
+    ---@param client obsidian.Client
+    ---@param note obsidian.Note
+    leave_note = function(client, note) end,
+
+    -- Runs right before writing the buffer for a note.
+    ---@param client obsidian.Client
+    ---@param note obsidian.Note
+    pre_write_note = function(client, note) end,
+
+    -- Runs anytime the workspace is set/changed.
+    ---@param client obsidian.Client
+    ---@param workspace obsidian.Workspace
+    post_set_workspace = function(client, workspace) end,
+  },
+
+  -- Specify how to handle attachments.
+  attachments = {
+    -- The default folder to place images in via `:ObsidianPasteImg`.
+    -- If this is a relative path it will be interpreted as relative to the vault root.
+    -- You can always override this per image by passing a full path to the command instead of just a filename.
+    img_folder = 'attatchments', -- This is the default
+
+    -- Optional, customize the default name or prefix when pasting images via `:ObsidianPasteImg`.
+    ---@return string
+    img_name_func = function()
+      -- Prefix image names with timestamp.
+      return string.format('%s-', os.time())
+    end,
+
+    -- A function that determines the text to insert in the note when pasting an image.
+    -- It takes two arguments, the `obsidian.Client` and an `obsidian.Path` to the image file.
+    -- This is the default implementation.
+    ---@param client obsidian.Client
+    ---@param path obsidian.Path the absolute path to the image file
+    ---@return string
+    img_text_func = function(client, path)
+      path = client:vault_relative_path(path) or path
+      return string.format('![%s](%s)', path.name, path)
+    end,
+  },
+  ui = {
+    enable = false,
+  },
+}
+
+-- keymaps for Obsidian
+vim.keymap.set('n', '<leader>on', ':ObsidianNew<CR>', { desc = '[O]bsidian [N]ew Note' })
+vim.keymap.set('n', '<leader>ol', ':ObsidianLinks<CR>', { desc = '[O]bsidian [L]inks' })
+vim.keymap.set('n', '<leader>ob', ':ObsidianBacklinks<CR>', { desc = '[O]bsidian [B]ack Links' })
+vim.keymap.set('n', '<leader>op', ':ObsidianPasteImg<CR>', { desc = '[O]bsidian [P]aste Imagen' })
+vim.keymap.set('n', '<leader>os', ':ObsidianSearch<CR>', { desc = '[O]bsidian [S]earch' })
+vim.keymap.set('n', '<leader>ot', ':ObsidianTags<CR>', { desc = '[O]bsidian [T]ags' })
+-- keymaps for Obsidian on selected text
+vim.keymap.set('v', '<leader>on', ':ObsidianLinkNew<CR>', { desc = '[O]bsidian [N]ew Note from Selection' })
+vim.keymap.set('v', '<leader>ol', ':ObsidianLink<CR>', { desc = '[O]bsidian [L]ink from Selection' })
