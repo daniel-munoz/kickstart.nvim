@@ -149,7 +149,7 @@ vim.o.splitbelow = true
 --  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
 --   See `:help lua-options`
 --   and `:help lua-options-guide`
-vim.o.list = true
+vim.o.list = false
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
@@ -562,6 +562,10 @@ require('lazy').setup({
           --  To jump back, press <C-t>.
           map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gsd', function()
+            vim.cmd [[ vsplit ]]
+            vim.lsp.buf.definition()
+          end, '[G]o to vertical [s]plit with [d]efinition')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
@@ -860,7 +864,7 @@ require('lazy').setup({
       completion = {
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
       },
 
       sources = {
@@ -1089,7 +1093,7 @@ vim.keymap.set('v', '<M-9>', '<Plug>CtrlSFVwordExec', { silent = true })
 
 require 'hydras'
 
-vim.ui.select = require('mini.pick').ui_select
+vim.ui.select = require('telescope').ui_select -- require('mini.pick').ui_select
 
 -- GitHub Copilot Chat keymaps
 vim.keymap.set('n', '<leader>cc', '<cmd>CopilotChatToggle<CR>', { desc = '[C]opilot [C]hat Toggle' })
