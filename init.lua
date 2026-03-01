@@ -1257,6 +1257,8 @@ require('obsidian').setup {
       return string.format('%s-', os.time())
     end,
 
+    confirm_img_paste = true, -- Whether to confirm before pasting an image into a note. This is recommended to avoid accidentally pasting large images.
+
     -- A function that determines the text to insert in the note when pasting an image.
     -- It takes two arguments, the `obsidian.Client` and an `obsidian.Path` to the image file.
     -- This is the default implementation.
