@@ -30,7 +30,7 @@ return {
       -- see select.lua for implementation
       -- selection = visual,
       selection = function(source)
-        local select = require 'CopilotChat.select'
+        local select = require 'CopilotChatSelection'
         return select.visual(source) or select.buffer(source)
       end,
 
