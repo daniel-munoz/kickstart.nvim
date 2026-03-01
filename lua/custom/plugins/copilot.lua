@@ -18,6 +18,11 @@ return {
           dismiss = '<C-]>',
         },
       },
+      panel = {
+        keymap = {
+          open = false, -- avoids conflict with suggestion.keymap.accept = '<M-CR>'
+        },
+      },
       filetypes = {
         yaml = false,
         markdown = false,
